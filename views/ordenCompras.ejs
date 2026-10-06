@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Órdenes de Compra</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f6f8;
+    }
+
+    nav {
+      background: #0d6efd;
+      padding: 18px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+
+    .container {
+      width: 85%;
+      margin: 30px auto;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .btn-nuevo {
+      display: inline-block;
+      background: #dc3545;
+      color: white;
+      padding: 10px 14px;
+      text-decoration: none;
+      margin-bottom: 15px;
+      border-radius: 4px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background: #212529;
+      color: white;
+    }
+
+    .btn-editar {
+      background: #ffc107;
+      padding: 7px 10px;
+      text-decoration: none;
+      color: black;
+      border-radius: 4px;
+    }
+
+    .btn-eliminar {
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 8px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    form {
+      display: inline;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <strong>Farmacia</strong>
+
+    <div>
+      <a href="/laboratorios">Laboratorios</a>
+      <a href="/ordenes">Órdenes de Compra</a>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <h1>LISTADO DE ÓRDENES DE COMPRA</h1>
+
+    <a class="btn-nuevo" href="/ordenes/nuevo">
+      Nueva Orden
+    </a>
+
+    <table>
+      <thead>
+        <tr>
+          <th>N° Orden</th>
+          <th>Fecha</th>
+          <th>Situación</th>
+          <th>Total</th>
+          <th>Laboratorio</th>
+          <th>N° Factura</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <% ordenes.forEach(orden => { %>
+
+          <tr>
+            <td><%= orden.NroOrdenC %></td>
+
+            <td>
+              <%= orden.fechaEmision
+                ? new Date(orden.fechaEmision).toLocaleDateString('es-PE')
+                : ''
+              %>
+            </td>
+
+            <td><%= orden.Situacion %></td>
+
+            <td>S/ <%= orden.Total %></td>
+
+            <td>
+              <%= orden.Laboratorio
+                ? orden.Laboratorio.razonSocial
+                : 'Sin laboratorio'
+              %>
+            </td>
+
+            <td><%= orden.NrofacturaProv %></td>
+
+            <td>
+
+              <a
+                class="btn-editar"
+                href="/ordenes/editar/<%= orden.NroOrdenC %>"
+              >
+                Actualizar
+              </a>
+
+              <form
+                action="/ordenes/eliminar/<%= orden.NroOrdenC %>"
+                method="POST"
+              >
+                <button
+                  type="submit"
+                  class="btn-eliminar"
+                  onclick="return confirm('¿Desea eliminar esta orden?')"
+                >
+                  Eliminar
+                </button>
+              </form>
+
+            </td>
+          </tr>
+
+        <% }) %>
+
+      </tbody>
+    </table>
+
+  </div>
+
+</body>
+</html>

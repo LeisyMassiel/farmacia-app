@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Actualizar Orden de Compra</title>
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+</head>
+
+<body class="bg-light">
+
+<nav class="navbar navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand text-warning fw-bold" href="/menu">
+      Farmacia
+    </a>
+  </div>
+</nav>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+
+      <div class="card shadow">
+
+        <div class="card-header bg-warning">
+          <h4 class="mb-0">
+            ACTUALIZAR ORDEN DE COMPRA
+          </h4>
+        </div>
+
+        <div class="card-body">
+
+          <form
+            id="ordenForm"
+            action="/ordenes/editar/<%= orden.NroOrdenC %>"
+            method="POST"
+            novalidate
+          >
+
+            <div class="mb-3">
+              <label for="fechaEmision" class="form-label">
+                Fecha de emisión
+              </label>
+
+              <input
+                type="date"
+                id="fechaEmision"
+                name="fechaEmision"
+                class="form-control"
+                value="<%= orden.fechaEmision
+                  ? new Date(orden.fechaEmision)
+                      .toISOString()
+                      .split('T')[0]
+                  : ''
+                %>"
+              >
+
+              <div
+                id="errorFecha"
+                class="text-danger small mt-1"
+              ></div>
+            </div>
+
+            <div class="mb-3">
+              <label for="Situacion" class="form-label">
+                Situación
+              </label>
+
+              <select
+                id="Situacion"
+                name="Situacion"
+                class="form-select"
+              >
+
+                <option value="">
+                  Seleccione
+                </option>
+
+                <option
+                  value="Pendiente"
+                  <%= orden.Situacion === 'Pendiente'
+                    ? 'selected'
+                    : ''
+                  %>
+                >
+                  Pendiente
+                </option>
+
+                <option
+                  value="Completada"
+                  <%= orden.Situacion === 'Completada'
+                    ? 'selected'
+                    : ''
+                  %>
+                >
+                  Completada
+                </option>
+
+                <option
+                  value="Cancelada"
+                  <%= orden.Situacion === 'Cancelada'
+                    ? 'selected'
+                    : ''
+                  %>
+                >
+                  Cancelada
+                </option>
+
+              </select>
+
+              <div
+                id="errorSituacion"
+                class="text-danger small mt-1"
+              ></div>
+            </div>
+
+            <div class="mb-3">
+              <label for="Total" class="form-label">
+                Total
+              </label>
+
+              <input
+                type="number"
+                id="Total"
+                name="Total"
+                step="0.01"
+                min="0"
+                class="form-control"
+                value="<%= orden.Total %>"
+              >
+
+              <div
+                id="errorTotal"
+                class="text-danger small mt-1"
+              ></div>
+            </div>
+
+            <div class="mb-3">
+              <label for="CodLab" class="form-label">
+                Laboratorio
+              </label>
+
+              <select
+                id="CodLab"
+                name="CodLab"
+                class="form-select"
+              >
+
+                <option value="">
+                  Seleccione un laboratorio
+                </option>
+
+                <% laboratorios.forEach(laboratorio => { %>
+
+                  <option
+                    value="<%= laboratorio.CodLab %>"
+                    <%= Number(orden.CodLab) ===
+                        Number(laboratorio.CodLab)
+                      ? 'selected'
+                      : ''
+                    %>
+                  >
+                    <%= laboratorio.razonSocial %>
+                  </option>
+
+                <% }) %>
+
+              </select>
+
+              <div
+                id="errorLaboratorio"
+                class="text-danger small mt-1"
+              ></div>
+            </div>
+
+            <div class="mb-3">
+              <label for="NrofacturaProv" class="form-label">
+                Número de factura
+              </label>
+
+              <input
+                type="text"
+                id="NrofacturaProv"
+                name="NrofacturaProv"
+                class="form-control"
+                value="<%= orden.NrofacturaProv %>"
+              >
+
+              <div
+                id="errorFactura"
+                class="text-danger small mt-1"
+              ></div>
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-success w-100 mb-2"
+            >
+              Actualizar
+            </button>
+
+            <a
+              href="/ordenes"
+              class="btn btn-danger w-100"
+            >
+              Cancelar
+            </a>
+
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('ordenForm');
+
+  form.addEventListener('submit', function (event) {
+    let valido = true;
+
+    const fecha =
+      document.getElementById('fechaEmision');
+
+    const situacion =
+      document.getElementById('Situacion');
+
+    const total =
+      document.getElementById('Total');
+
+    const laboratorio =
+      document.getElementById('CodLab');
+
+    const factura =
+      document.getElementById('NrofacturaProv');
+
+    const errorFecha =
+      document.getElementById('errorFecha');
+
+    const errorSituacion =
+      document.getElementById('errorSituacion');
+
+    const errorTotal =
+      document.getElementById('errorTotal');
+
+    const errorLaboratorio =
+      document.getElementById('errorLaboratorio');
+
+    const errorFactura =
+      document.getElementById('errorFactura');
+
+    errorFecha.textContent = '';
+    errorSituacion.textContent = '';
+    errorTotal.textContent = '';
+    errorLaboratorio.textContent = '';
+    errorFactura.textContent = '';
+
+    fecha.classList.remove('is-invalid');
+    situacion.classList.remove('is-invalid');
+    total.classList.remove('is-invalid');
+    laboratorio.classList.remove('is-invalid');
+    factura.classList.remove('is-invalid');
+
+    if (fecha.value === '') {
+      errorFecha.textContent =
+        'Seleccione una fecha de emisión.';
+      fecha.classList.add('is-invalid');
+      valido = false;
+    }
+
+    if (situacion.value === '') {
+      errorSituacion.textContent =
+        'Seleccione una situación.';
+      situacion.classList.add('is-invalid');
+      valido = false;
+    }
+
+    if (
+      total.value === '' ||
+      Number(total.value) <= 0
+    ) {
+      errorTotal.textContent =
+        'Ingrese un total mayor que 0.';
+      total.classList.add('is-invalid');
+      valido = false;
+    }
+
+    if (laboratorio.value === '') {
+      errorLaboratorio.textContent =
+        'Seleccione un laboratorio.';
+      laboratorio.classList.add('is-invalid');
+      valido = false;
+    }
+
+    if (factura.value.trim().length < 3) {
+      errorFactura.textContent =
+        'Ingrese un número de factura válido.';
+      factura.classList.add('is-invalid');
+      valido = false;
+    }
+
+    if (!valido) {
+      event.preventDefault();
+    }
+  });
+</script>
+
+</body>
+</html>

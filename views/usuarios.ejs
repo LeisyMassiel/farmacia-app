@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usuarios</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+    }
+
+    nav {
+      background: #0d6efd;
+      color: white;
+      padding: 16px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+
+    .container {
+      width: 85%;
+      margin: 35px auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: center;
+    }
+
+    th {
+      background: #212529;
+      color: white;
+    }
+
+    .rol {
+      font-weight: bold;
+      text-transform: capitalize;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <strong>Farmacia</strong>
+
+    <div>
+      <a href="/menu">Inicio</a>
+      <a href="/laboratorios">Laboratorios</a>
+      <a href="/ordenes">Órdenes de Compra</a>
+      <a href="/usuarios">Usuarios</a>
+      <a href="/logout">Cerrar sesión</a>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <h1>USUARIOS REGISTRADOS</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Rol</th>
+          <th>Fecha de Registro</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% usuarios.forEach(usuario => { %>
+
+          <tr>
+            <td><%= usuario.id %></td>
+
+            <td><%= usuario.nombre %></td>
+
+            <td><%= usuario.email %></td>
+
+            <td class="rol">
+              <%= usuario.rol %>
+            </td>
+
+            <td>
+              <%= new Date(usuario.createdAt)
+                .toLocaleDateString('es-PE') %>
+            </td>
+          </tr>
+
+        <% }) %>
+      </tbody>
+    </table>
+
+  </div>
+
+</body>
+</html>

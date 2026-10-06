@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nuevo Laboratorio</title>
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<nav class="navbar navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand text-warning fw-bold" href="/menu">
+      Farmacia
+    </a>
+  </div>
+</nav>
+
+<div class="form-container">
+  <div class="card shadow">
+
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">NUEVO LABORATORIO</h4>
+    </div>
+
+    <div class="card-body">
+
+      <form
+        id="laboratorioForm"
+        action="/laboratorios/nuevo"
+        method="POST"
+        novalidate
+      >
+
+        <div class="mb-3">
+          <label for="razonSocial" class="form-label">
+            Razón Social
+          </label>
+
+          <input
+            type="text"
+            id="razonSocial"
+            name="razonSocial"
+            class="form-control"
+          >
+
+          <div
+            id="errorRazonSocial"
+            class="text-danger small mt-1"
+          ></div>
+        </div>
+
+        <div class="mb-3">
+          <label for="direccion" class="form-label">
+            Dirección
+          </label>
+
+          <input
+            type="text"
+            id="direccion"
+            name="direccion"
+            class="form-control"
+          >
+
+          <div
+            id="errorDireccion"
+            class="text-danger small mt-1"
+          ></div>
+        </div>
+
+        <div class="mb-3">
+          <label for="telefono" class="form-label">
+            Teléfono
+          </label>
+
+          <input
+            type="text"
+            id="telefono"
+            name="telefono"
+            class="form-control"
+          >
+
+          <div
+            id="errorTelefono"
+            class="text-danger small mt-1"
+          ></div>
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">
+            Email
+          </label>
+
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="form-control"
+          >
+
+          <div
+            id="errorEmail"
+            class="text-danger small mt-1"
+          ></div>
+        </div>
+
+        <div class="mb-3">
+          <label for="contacto" class="form-label">
+            Contacto
+          </label>
+
+          <input
+            type="text"
+            id="contacto"
+            name="contacto"
+            class="form-control"
+          >
+
+          <div
+            id="errorContacto"
+            class="text-danger small mt-1"
+          ></div>
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-success w-100 mb-2"
+        >
+          Guardar
+        </button>
+
+        <a
+          href="/laboratorios"
+          class="btn btn-danger w-100"
+        >
+          Cancelar
+        </a>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('laboratorioForm');
+
+  form.addEventListener('submit', function (event) {
+    let valido = true;
+
+    const razonSocial =
+      document.getElementById('razonSocial');
+
+    const direccion =
+      document.getElementById('direccion');
+
+    const telefono =
+      document.getElementById('telefono');
+
+    const email =
+      document.getElementById('email');
+
+    const contacto =
+      document.getElementById('contacto');
+
+    const errorRazonSocial =
+      document.getElementById('errorRazonSocial');
+
+    const errorDireccion =
+      document.getElementById('errorDireccion');
+
+    const errorTelefono =
+      document.getElementById('errorTelefono');
+
+    const errorEmail =
+      document.getElementById('errorEmail');
+
+    const errorContacto =
+      document.getElementById('errorContacto');
+
+    errorRazonSocial.textContent = '';
+    errorDireccion.textContent = '';
+    errorTelefono.textContent = '';
+    errorEmail.textContent = '';
+    errorContacto.textContent = '';
+
+    razonSocial.classList.remove('is-invalid');
+    direccion.classList.remove('is-invalid');
+    telefono.classList.remove('is-invalid');
+    email.classList.remove('is-invalid');
+    contacto.classList.remove('is-invalid');
+
+    if (razonSocial.value.trim().length < 3) {
+      errorRazonSocial.textContent =
+        'Ingrese una razón social válida.';
+      razonSocial.classList.add('is-invalid');
+      valido = false;
+    }
+
+    if (direccion.value.trim().length < 5) {
+      errorDireccion.textContent =
+        'Ingrese una dirección válida.';
+      direccion.classList.add('is-invalid');
+      valido = false;
+    }
+
+    const patronTelefono = /^[0-9]{7,12}$/;
+
+    if (!patronTelefono.test(telefono.value.trim())) {
+      errorTelefono.textContent =
+        'Ingrese un teléfono válido de 7 a 12 dígitos.';
+      telefono.classList.add('is-invalid');
+      valido = false;
+    }
+
+    const patronEmail =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!patronEmail.test(email.value.trim())) {
+      errorEmail.textContent =
+        'Ingrese un correo electrónico válido.';
+      email.classList.add('is-invalid');
+      valido = false;
+    }
+
+    if (contacto.value.trim().length < 3) {
+      errorContacto.textContent =
+        'Ingrese un nombre de contacto válido.';
+      contacto.classList.add('is-invalid');
+      valido = false;
+    }
+
+    if (!valido) {
+      event.preventDefault();
+    }
+  });
+</script>
+
+</body>
+</html>

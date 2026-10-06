@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laboratorios</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand text-warning fw-bold" href="/">Farmacia</a>
+    <div class="navbar-nav">
+      <a class="nav-link" href="/laboratorios">Laboratorios</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <h2 class="text-center mb-4">LISTADO DE LABORATORIOS</h2>
+
+  <a href="/laboratorios/nuevo" class="btn btn-danger mb-3">
+    Nuevo Laboratorio
+  </a>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover text-center align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>Código</th>
+          <th>Razón Social</th>
+          <th>Dirección</th>
+          <th>Teléfono</th>
+          <th>Email</th>
+          <th>Contacto</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% if (laboratorios.length === 0) { %>
+          <tr>
+            <td colspan="7">No existen laboratorios registrados</td>
+          </tr>
+        <% } %>
+
+        <% laboratorios.forEach(lab => { %>
+          <tr>
+            <td><%= lab.CodLab %></td>
+            <td><%= lab.razonSocial %></td>
+            <td><%= lab.direccion %></td>
+            <td><%= lab.telefono %></td>
+            <td><%= lab.email %></td>
+            <td><%= lab.contacto %></td>
+            <td>
+              <a href="/laboratorios/editar/<%= lab.CodLab %>" class="btn btn-warning btn-sm">
+                Actualizar
+              </a>
+
+              <form action="/laboratorios/eliminar/<%= lab.CodLab %>" method="POST" class="d-inline"
+                    onsubmit="return confirm('¿Desea eliminar este laboratorio?')">
+                <button class="btn btn-danger btn-sm">Eliminar</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+
+      <tfoot class="table-dark">
+        <tr>
+          <td colspan="7">REGISTRO DE LABORATORIOS</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+</body>
+</html>
